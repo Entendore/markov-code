@@ -1,0 +1,66 @@
+{
+  "name": "markov-code",
+  "displayName": "Markov Code",
+  "description": "Local, privacy-first code completion using Markov chains.",
+  "version": "1.0.0",
+  "publisher": "local-dev",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": ["Machine Learning", "Programming Languages", "Other"],
+  "keywords": ["autocomplete", "copilot", "markov", "python", "javascript"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "markov-code.train", "title": "Markov Code: Train Model on Workspace" },
+      { "command": "markov-code.clear", "title": "Markov Code: Clear Saved Model" },
+      { "command": "markov-code.stats", "title": "Markov Code: Show Model Stats" },
+      { "command": "markov-code.toggle", "title": "Markov Code: Toggle Suggestions" }
+    ],
+    "keybindings": [
+      { "command": "editor.action.inlineSuggest.trigger", "key": "alt+\\", "when": "editorTextFocus" }
+    ],
+    "configuration": {
+      "title": "Markov Code",
+      "properties": {
+        "markov-code.stateSize": {
+          "type": "number",
+          "default": 2,
+          "description": "The N-gram state size. 2 is faster, 3 is more coherent but requires more training data."
+        },
+        "markov-code.maxSuggestionTokens": {
+          "type": "number",
+          "default": 15,
+          "description": "Maximum number of tokens to generate per suggestion."
+        },
+        "markov-code.excludeFolders": {
+          "type": "string",
+          "default": "{**/node_modules/**,**/venv/**,**/dist/**,**/build/**,**/.git/**}",
+          "description": "Glob pattern for folders to exclude during training."
+        },
+        "markov-code.autoTrain": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically update the model with new code when you save a file."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "bunx @vscode/vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "^18.15.0",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0",
+    "typescript": "^5.4.5",
+    "@vscode/vsce": "^3.2.0"
+  }
+}
